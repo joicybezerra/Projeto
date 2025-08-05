@@ -12,7 +12,7 @@ def get_ip_family(host):
         elif isinstance(ip, ipaddress.IPv6Address):
             return socket.AF_INET6;
     except ValueError:
-        raise ValueErro(f "Este endereço de IP está inválido: {host}")
+        raise ValueError(f"Este endereço de IP está inválido: {host}")
     
 def criar_socket_comunicacao(protocolo, host, porta):
     #Cria um socket de comunicação adaptado para get_ip_family
@@ -25,7 +25,7 @@ def criar_socket_comunicacao(protocolo, host, porta):
     #pemite que o servidor seja reiniciado e o erro "porta ocupada" seja evitado
     return sock #retorna ao socket
 
-def enviar_dados(sock, dados, protocolo, oponente_addr=None)
+def enviar_dados(sock, dados, protocolo, oponente_addr=None):
     #define a função que envia mensagens pela rede
     #sock = socket usado
     #dados = dados a serem enviados
