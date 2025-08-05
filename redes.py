@@ -25,7 +25,7 @@ def criar_socket_comunicacao(protocolo, host, porta):
     #pemite que o servidor seja reiniciado e o erro "porta ocupada" seja evitado
     return sock #retorna ao socket
 
-def enviar_dados(sock, dados, protocolo, oponente_addr=None):
+def enviar_dados(sock, dados, protocolo, oponente_addr=None, buffer_size=1024):
     #define a função que envia mensagens pela rede
     #sock = socket usado
     #dados = dados a serem enviados
@@ -38,7 +38,7 @@ def enviar_dados(sock, dados, protocolo, oponente_addr=None):
 
     try:
         if protocolo.lower() == 'tcp':
-            sock.sendall(payload);
+            sock.sendall(payload)
         # O sendall garante que o envio por TCP seja completo.
         else: # UDP
             payload, oponente_addr = sock.recvfrom(buffer_size)
