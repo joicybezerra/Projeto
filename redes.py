@@ -35,4 +35,17 @@ def enviar_dados(sock, dados, protocolo, oponente_addr=None):
     #O oponente_addr é necessário para UDP.
     payload = json.dumps(dados).encode('utf-8')
     #playload = pronto para que o socket possa enviar
-    
+
+    try:
+        if protocolo.lower() == 'tcp':
+            sock.sendall(payload);
+        # O sendall garante que o envio por TCP seja completo.
+        else: # UDP
+            payload, oponente_addr = sock.recvfrom(buffer_size)
+
+            dados = json.loads(payload.decode('utf-8'))
+            return dados, oponente_addr
+    except (socket.error, json.JSONDecodeError, ConnectionResetError) as e:
+        print(f"Erro ao receber dados: {e}")
+
+    return None, None
