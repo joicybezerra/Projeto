@@ -6,5 +6,7 @@ import os
 #utilizado para encerrar o programa (os._exit(1))
 
 opcao = input("Deseja hostear (h) ou conectar-se (c) a uma sala? h/c: ").strip().lower()
+while opcao not in ["h", "c"]:
+    opcao = input("Modo inválido. Use 'h' ou 'c': ").strip().lower()
 
 
