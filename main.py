@@ -1,10 +1,9 @@
-import socket;
+import redes
+#o programa precisa usar algumas funções que foram implementadas no arquivo redes, por isso foi importado 
+import threading
+#executar tarefas ao mesmo tempo (o pragrama necessita disso já que precisa-se enviar e receber mensagens)
+import os
+#utilizado para encerrar o programa (os._exit(1))
 
-modo = input("Deseja hostear (h) ou conectar-se (c) a uma sala? h/c: ")
-# Pergunta ao usuário se deseja hostear ou conectar-se a uma sala
-while modo not in ["h", "c"]:
-#Enquanto o usuário não digitar uma opção válida, continua perguntando
-    print("Opção inválida. Tente novamente.")
-    modo = input("Deseja hostear (h) ou conectar-se (c) a uma sala? h/c: ")
-    
+
 
