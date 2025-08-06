@@ -8,5 +8,10 @@ import os
 opcao = input("Deseja hostear (h) ou conectar-se (c) a uma sala? h/c: ").strip().lower()
 while opcao not in ["h", "c"]:
     opcao = input("Modo inválido. Use 'h' ou 'c': ").strip().lower()
+if opcao == "h":
+   print("Qual protocolo deseja usar para a sala? tpc/udp:")
+else:
+   print("Qual o protocolo da sala? tcp/udp:")
+
 
 
