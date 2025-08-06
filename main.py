@@ -5,5 +5,6 @@ import threading
 import os
 #utilizado para encerrar o programa (os._exit(1))
 
+opcao = input("Deseja hostear (h) ou conectar-se (c) a uma sala? h/c: ").strip().lower()
 
 
