@@ -20,6 +20,12 @@ while True:
 	    break
 print("Protocolo não compatível, peço que por favor use TCP/UDP:")
 
+if opcao == "h":
+    ipHost = input("Qual o seu IP (IPv4 ou IPv6)? ")
+else:
+    ipHost = input("Qual o IP do host? ")
+
+
 
 
 
