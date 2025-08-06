@@ -169,3 +169,6 @@ class CatChatGUI:
     def clear_window(self):
         for widget in self.master.winfo_children():
             widget.destroy()
+import socket;
+import threading;
+import time;
