@@ -40,6 +40,7 @@ while True:
     except ValueError as e:
 	    print("Porta inválida, escolha uma porta válida")
 
+apelido =  input("Qual apelido deseja usar na conversa?: ")
 
 
 
