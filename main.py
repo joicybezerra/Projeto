@@ -61,6 +61,7 @@ if opcao == 'h':
             print("Erro ao estabelecer conexão. TEMPO EXCEDIDO.")
             os._exit(1)
 
+       sockconectado.settimeout(None)
 
 
 
