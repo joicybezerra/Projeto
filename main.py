@@ -63,6 +63,9 @@ if opcao == 'h':
 
        sockconectado.settimeout(None)
 
+       IP, PORTA = enderecoconectado
+       print(f"Conectado por {IP}:{PORTA} utilizando {protocolo.upper()}.")
+       dados, _ = redes.receberDados(sockconectado, protocolo)
 
 
 
