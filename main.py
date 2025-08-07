@@ -52,6 +52,16 @@ enderecoconectado = (ipHost, portaSala)
 if opcao == 'h':
     sock.bind((ipHost, portaSala))
     sock.settimeout(180)
+    if protocolo == "tcp":
+       sock.listen()
+       print("Aguardando conexão por 3min...")              
+       try:
+            sockconectado, enderecoConexao= sock.accept()
+       except:
+            print("Erro ao estabelecer conexão. TEMPO EXCEDIDO.")
+            os._exit(1)
+
+
 
 
 
