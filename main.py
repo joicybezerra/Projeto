@@ -88,3 +88,7 @@ else:
         redes.enviarDados(sock, {"Mensagem": "conectar"}, protocolo, enderecoconectado)
         print(f"Conectado a {ipHost}:{portaSala} utilizando {protocolo.upper()}.")
         dados, _ = redes.receberDados(sock, protocolo)
+
+    nomeDoOutroUsuario = dados.get("Apelido", nomeDoOutroUsuario)
+    redes.enviarDados(sock, {"Apelido": apelido}, protocolo, enderecoconectado)
+
