@@ -1,6 +1,7 @@
 import redes
 import threading
 import os
+ 
 
 opcao = input("Deseja hostear (h) ou conectar-se (c) a uma sala? h/c: ").strip().lower()
 
@@ -91,4 +92,82 @@ else:
 
     nomeDoOutroUsuario = dados.get("Apelido", nomeDoOutroUsuario)
     redes.enviarDados(sock, {"Apelido": apelido}, protocolo, enderecoconectado)
+
+
+    rodando = True
+
+def finalizarAplicacao(msg=""):
+    print(msg, end="")
+    try:
+        if sockconectado:
+            sockconectado.shutdown(redes.socket.SHUT_RDWR)
+        if sock:
+            sock.shutdown(redes.socket.SHUT_RDWR)
+    except Exception:
+        pass
+
+def receberMensagens(sessao):
+    global rodando
+    while rodando:
+        dados = None
+        dados, _ = redes.receberDados(sockconectado, protocolo)
+
+        if not rodando or not sockconectado:
+            msg = f"{nomeDoOutroUsuario} encerrou a conexão. Encerrando..."
+            finalizarAplicacao(msg)
+            break
+
+        if dados:
+            if dados.get("Comando") == "desconectar":
+                msg = f"{nomeDoOutroUsuario} encerrou a conexão. Encerrando..."
+                print(msg)
+                rodando = False
+                sessao.app.loop.call_soon_threadsafe(sessao.app.exit)
+                break
+
+            print(f"{nomeDoOutroUsuario}: {dados.get('Mensagem')}")
+        else:
+            if rodando:
+                rodando = False
+                finalizarAplicacao("Conexão perdida. Encerrando...")
+            break
+
+def mandarMensagens(sessao):
+    global rodando
+    while rodando:
+        try:
+            comando = ""
+            conteudo = sessao.prompt()
+
+            if conteudo == "/sair":
+                rodando = False
+                comando = "desconectar"
+                mensagem = {"Comando": comando, "Mensagem": ""}
+                redes.enviarDados(sockconectado, mensagem, protocolo, enderecoconectado)
+                print("Desconectando...")
+                finalizarAplicacao("")
+                break
+
+            if rodando:
+                mensagem = {"Comando": comando, "Mensagem": conteudo}
+                redes.enviarDados(sockconectado, mensagem, protocolo, enderecoconectado)
+
+        except (EOFError, KeyboardInterrupt):
+            rodando = False
+            break
+
+# === EXECUÇÃO DOS THREADS ===
+sessao = PromptSession(f"{apelido}(Você): ")
+
+with patch_stdout():
+    threadEntrada = threading.Thread(target=receberMensagens, args=(sessao,))
+    threadSaida = threading.Thread(target=mandarMensagens, args=(sessao,))
+
+    threadEntrada.start()
+    threadSaida.start()
+
+    threadEntrada.join()
+    threadSaida.join()
+
+finalizarAplicacao("Conversa finalizada.")
 
