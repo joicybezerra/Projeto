@@ -51,6 +51,7 @@ enderecoconectado = (ipHost, portaSala)
 
 if opcao == 'h':
     sock.bind((ipHost, portaSala))
+    
 
 
 
