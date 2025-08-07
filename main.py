@@ -80,3 +80,6 @@ else:
 
     if protocolo == "tcp":
         sock.connect((ipHost, portaSala))
+        print(f"Conectado a {ipHost}:{portaSala} utilizando {protocolo.upper()}.")
+        redes.enviarDados(sock, {"Mensagem": "conectar"}, protocolo)
+        dados, _ = redes.receberDados(sock, protocolo)
