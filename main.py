@@ -15,8 +15,8 @@ else:
    print("Qual o protocolo da sala? tcp/udp:")
 
 while True:
- protocolo = input().strip().lower()
- if  protocolo in ["tcp", "udp"]:
+    protocolo = input().strip().lower()
+    if  protocolo in ["tcp", "udp"]:
 	    break
 print("Protocolo não compatível, peço que por favor use TCP/UDP:")
 
@@ -24,6 +24,14 @@ if opcao == "h":
     ipHost = input("Qual o seu IP (IPv4 ou IPv6)? ")
 else:
     ipHost = input("Qual o IP do host? ")
+
+if opcao == "h":
+	print("Qual a porta para a sua sala? (ex: 12345): ")
+else:
+	print("Qual a porta da sala?")
+    
+
+
 
 
 
