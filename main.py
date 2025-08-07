@@ -30,6 +30,16 @@ if opcao == "h":
 else:
 	print("Qual a porta da sala?")
     
+while True:
+    try:
+        portaSala = int(input())
+        if portaSala <65535 and portaSala > 1023:
+	        break
+        else:
+            print("Porta inválida, escolha uma porta válida:")
+    except ValueError as e:
+	    print("Porta inválida, escolha uma porta válida")
+
 
 
 
