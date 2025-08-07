@@ -73,3 +73,5 @@ else:
         print(f"Conectado por {IP}:{PORTA} utilizando {protocolo.upper()}.")
 
 
+nomeDoOutroUsuario = dados.get("Apelido", nomeDoOutroUsuario)
+redes.enviarDados(sockconectado, {"Apelido": apelido}, protocolo, enderecoconectado)
