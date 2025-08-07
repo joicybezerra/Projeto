@@ -65,7 +65,7 @@ if opcao == 'h':
        dados, _ = redes.receberDados(sockconectado, protocolo)
 
 
-else:
+    else:
         print("Aguardando conexão por 3min...")
         dados, enderecoconectado = redes.receberDados(sock, protocolo)
         sock.settimeout(None)
@@ -73,5 +73,10 @@ else:
         print(f"Conectado por {IP}:{PORTA} utilizando {protocolo.upper()}.")
 
 
-nomeDoOutroUsuario = dados.get("Apelido", nomeDoOutroUsuario)
-redes.enviarDados(sockconectado, {"Apelido": apelido}, protocolo, enderecoconectado)
+    nomeDoOutroUsuario = dados.get("Apelido", nomeDoOutroUsuario)
+    redes.enviarDados(sockconectado, {"Apelido": apelido}, protocolo, enderecoconectado)
+
+else:
+
+    if protocolo == "tcp":
+        sock.connect((ipHost, portaSala))
