@@ -42,6 +42,7 @@ while True:
 
 apelido =  input("Qual apelido deseja usar na conversa?: ")
 
+nomeDoOutroUsuario = "falhaAoConseguirApelido"
 
 
 
