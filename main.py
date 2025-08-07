@@ -51,7 +51,8 @@ enderecoconectado = (ipHost, portaSala)
 
 if opcao == 'h':
     sock.bind((ipHost, portaSala))
-    
+    sock.settimeout(180)
+
 
 
 
