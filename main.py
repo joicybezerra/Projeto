@@ -44,8 +44,9 @@ apelido =  input("Qual apelido deseja usar na conversa?: ")
 
 nomeDoOutroUsuario = "falhaAoConseguirApelido"
 
-
-
+sock = redes.crirSocket(protocolo, ipHost, portaSala)
+sockconectado = sock
+enderecoconectado = (ipHost, portaSala)
 
 
 
