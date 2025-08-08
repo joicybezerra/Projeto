@@ -12,7 +12,7 @@ def get_ip_family(host):
         elif isinstance(ip, ipaddress.IPv6Address):
             return socket.AF_INET6;
     except (ValueError) as e:
-                print(f"Este endereço de IP está inválido: " {e})
+                print(f"Este endereço de IP está inválido: {e}")
     
 def criar_socket_comunicacao(protocolo, host, porta):
     #Cria um socket de comunicação adaptado para get_ip_family
@@ -21,11 +21,11 @@ def criar_socket_comunicacao(protocolo, host, porta):
     #SOCK_STREAM = TCP; SOCK_DGRAM = UDP
     sock = socket.socket(family, sock_type)
     #criar socket com a familia IP e o tipo de protocolo escolhido
-    sock.setsockopt(socket.socketsetsockopt(socket.SOL_SOCKET, socket.SO_REUSEADOR, 1))
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     #pemite que o servidor seja reiniciado e o erro "porta ocupada" seja evitado
     return sock #retorna ao socket
 
-def enviar_dados(sock, dados, protocolo, oponente_addr=None, buffer_size=1024):
+def enviar_dados(sock, dados, protocolo, oponente_addr=None):
     #define a função que envia mensagens pela rede
     #sock = socket usado
     #dados = dados a serem enviados
@@ -39,13 +39,15 @@ def enviar_dados(sock, dados, protocolo, oponente_addr=None, buffer_size=1024):
     try:
         if protocolo.lower() == 'tcp':
             sock.sendall(payload)
+            return True
         # O sendall garante que o envio por TCP seja completo.
         else: # UDP
-            payload, oponente_addr = sock.recvfrom(buffer_size)
+            if oponente_addr:
+                sock.sendto(payload, oponente_addr)
+                return True
 
             dados = json.loads(payload.decode('utf-8'))
             return dados, oponente_addr
     except (socket.error, json.JSONDecodeError, ConnectionResetError) as e:
         print(f"Erro ao receber dados: {e}")
-
-    return None, None
+    return False
