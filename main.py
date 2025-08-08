@@ -8,15 +8,15 @@ opcao = input("Deseja hostear (h) ou conectar-se (c) a uma sala? h/c: ").strip()
 while opcao not in ["h", "c"]:
     opcao = input("Modo inválido. Use 'h' ou 'c': ").strip().lower()
 if opcao == "h":
-   print("Qual protocolo deseja usar para a sala? tpc/udp:")
+    print("Qual protocolo deseja usar para a sala? tpc/udp:")
 else:
-   print("Qual o protocolo da sala? tcp/udp:")
+    print("Qual o protocolo da sala? tcp/udp:")
 
 while True:
     protocolo = input().strip().lower()
-    if  protocolo in ["tcp", "udp"]:
-	    break
-print("Protocolo não compatível, peço que por favor use TCP/UDP:")
+    if  protocolo in ["tcp", "udp"]: 
+        break
+    print("Protocolo não compatível, peço que por favor use TCP/UDP:")
 
 if opcao == "h":
     ipHost = input("Qual o seu IP (IPv4 ou IPv6)? ")
@@ -31,10 +31,9 @@ else:
 while True:
     try:
         portaSala = int(input())
-        if portaSala <65535 and portaSala > 1023:
-	        break
-        else:
-            print("Porta inválida, escolha uma porta válida:")
+        if portaSala <65535 and portaSala > 1023: 
+            break
+        print("Porta inválida, escolha uma porta válida:")
     except ValueError as e:
 	    print("Porta inválida, escolha uma porta válida")
 
@@ -94,7 +93,12 @@ else:
     redes.enviarDados(sock, {"Apelido": apelido}, protocolo, enderecoconectado)
 
 
-    rodando = True
+
+from prompt_toolkit import PromptSession
+from prompt_toolkit.patch_stdout import patch_stdout
+
+
+rodando = True
 
 def finalizarAplicacao(msg=""):
     print(msg, end="")

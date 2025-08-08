@@ -12,7 +12,7 @@ def get_ip_family(host):
         elif isinstance(ip, ipaddress.IPv6Address):
             return socket.AF_INET6;
     except (ValueError) as e:
-                print(f "Este endereço de IP está inválido: " {e})
+                print(f"Este endereço de IP está inválido: " {e})
     
 def criar_socket_comunicacao(protocolo, host, porta):
     #Cria um socket de comunicação adaptado para get_ip_family
