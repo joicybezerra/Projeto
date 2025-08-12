@@ -41,7 +41,7 @@ apelido =  input("Qual apelido deseja usar na conversa?: ")
 
 nomeDoOutroUsuario = "falhaAoConseguirApelido"
 
-sock = redes.crirSocket(protocolo, ipHost, portaSala)
+sock = redes.criar_socket_comunicacao(protocolo, ipHost, portaSala)
 sockconectado = sock
 enderecoconectado = (ipHost, portaSala)
 
@@ -62,35 +62,32 @@ if opcao == 'h':
 
        IP, PORTA = enderecoconectado
        print(f"Conectado por {IP}:{PORTA} utilizando {protocolo.upper()}.")
-       dados, _ = redes.receberDados(sockconectado, protocolo)
-
 
     else:
         print("Aguardando conexão por 3min...")
-        dados, enderecoconectado = redes.receberDados(sock, protocolo)
+        dados, enderecoconectado = redes.receber_dados(sock, protocolo)
         sock.settimeout(None)
         IP, PORTA = enderecoconectado
         print(f"Conectado por {IP}:{PORTA} utilizando {protocolo.upper()}.")
 
-
-    nomeDoOutroUsuario = dados.get("Apelido", nomeDoOutroUsuario)
-    redes.enviarDados(sockconectado, {"Apelido": apelido}, protocolo, enderecoconectado)
+    dados, _ = redes.receber_dados(sockconectado, protocolo)
+    nomeDoOutroUsuario = dados.get("Apelido")
+    redes.enviar_dados(sockconectado, {"Apelido": apelido}, protocolo, enderecoconectado)
 
 else:
 
     if protocolo == "tcp":
-        sock.connect((ipHost, portaSala))
+        sock.connect((ipHost, portaSala)) 
         print(f"Conectado a {ipHost}:{portaSala} utilizando {protocolo.upper()}.")
-        redes.enviarDados(sock, {"Mensagem": "conectar"}, protocolo)
-        dados, _ = redes.receberDados(sock, protocolo)
     else:
         enderecoconectado = (ipHost, portaSala)
-        redes.enviarDados(sock, {"Mensagem": "conectar"}, protocolo, enderecoconectado)
+        redes.enviar_dados(sockconectado, {"Mensagem": "conectar"}, protocolo, enderecoconectado)
         print(f"Conectado a {ipHost}:{portaSala} utilizando {protocolo.upper()}.")
-        dados, _ = redes.receberDados(sock, protocolo)
 
-    nomeDoOutroUsuario = dados.get("Apelido", nomeDoOutroUsuario)
-    redes.enviarDados(sock, {"Apelido": apelido}, protocolo, enderecoconectado)
+    redes.enviar_dados(sockconectado, {"Apelido": apelido}, protocolo, enderecoconectado)
+    dados, _ = redes.receber_dados(sockconectado, protocolo)
+    nomeDoOutroUsuario = dados.get("Apelido")
+
 
 
 
@@ -114,7 +111,7 @@ def receberMensagens(sessao):
     global rodando
     while rodando:
         dados = None
-        dados, _ = redes.receberDados(sockconectado, protocolo)
+        dados, _ = redes.receber_dados(sockconectado, protocolo)
 
         if not rodando or not sockconectado:
             msg = f"{nomeDoOutroUsuario} encerrou a conexão. Encerrando..."
@@ -147,14 +144,14 @@ def mandarMensagens(sessao):
                 rodando = False
                 comando = "desconectar"
                 mensagem = {"Comando": comando, "Mensagem": ""}
-                redes.enviarDados(sockconectado, mensagem, protocolo, enderecoconectado)
+                redes.enviar_dados(sockconectado, mensagem, protocolo, enderecoconectado)
                 print("Desconectando...")
                 finalizarAplicacao("")
                 break
 
             if rodando:
                 mensagem = {"Comando": comando, "Mensagem": conteudo}
-                redes.enviarDados(sockconectado, mensagem, protocolo, enderecoconectado)
+                redes.enviar_dados(sockconectado, mensagem, protocolo, enderecoconectado)
 
         except (EOFError, KeyboardInterrupt):
             rodando = False
