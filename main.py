@@ -1,6 +1,5 @@
 import socket           # Comunicação em rede
 import threading        # Para rodar envio e recebimento em paralelo
-from interface import CatChatGUI
 import tkinter as tk
 import redes
 import threading
