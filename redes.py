@@ -51,3 +51,5 @@ def enviar_dados(sock, dados, protocolo, oponente_addr=None):
     except (socket.error, json.JSONDecodeError, ConnectionResetError) as e:
         print(f"Erro ao receber dados: {e}")
     return False
+
+
