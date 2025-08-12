@@ -52,4 +52,18 @@ def enviar_dados(sock, dados, protocolo, oponente_addr=None):
         print(f"Erro ao receber dados: {e}")
     return False
 
+def receber_dados(sock, protocolo, buffer_size=1024):
+    try:
+        if protocolo.lower() == 'tcp':
+            payload = sock.recv(buffer_size)
+            if not payload:
+                return None, None
+            oponente_addr = None # Em TCP, o endereço já é conhecido pela conexão
+        else: # UDP
+            payload, oponente_addr = sock.recvfrom(buffer_size)
 
+        dados = json.loads(payload.decode('utf-8'))
+        return dados, oponente_addr
+    except (socket.error, json.JSONDecodeError, ConnectionResetError) as e:
+        print(f"Erro ao receber dados: {e}")
+        return None, None
