@@ -1,6 +1,6 @@
-import redes
-import threading
-import os
+import redes # import do módulo redes
+import threading # roda envio e recebimento de mensagens
+import os # importa funções do sistema operacional
  
 
 opcao = input("Deseja hostear (h) ou conectar-se (c) a uma sala? h/c: ").strip().lower() # lê a escolha do usuário, remove espaços e padroniza o texto em letras minúsculas
