@@ -1,7 +1,7 @@
 import tkinter #módulo gráfico padrão
 from tkinter import scrolledtext, messagebox #caixa de texto com rolagem e janelas com avisos como alertas ou erros
 import threading #permite que o programa faça múltiplas tarefas ao mesmo tempo
-import redes #import de redes
+import redes 
 import json #estrutura das mensagens enviadas
 import socket #módulo de comunicação por rede do Python; TCP/IP 
 import time  #formata e exibe data e hora
@@ -194,7 +194,7 @@ class CatChatGUI:
         for widget in self.master.winfo_children(): #retorna uma lista com todos os botões, entradas de texto e etc
             widget.destroy() #apaga todos os widgets da janela para trocar de tela. exemplo: trocar de menu para o chat
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     root = tk.Tk() #cria a janela principal da interface
     app = CatChatGUI(root) #cria uma instância
     root.mainloop() #inicia o loop principal do tkinter, que mantém a janela aberta e responde a cliques, digitação e etc

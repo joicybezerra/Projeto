@@ -1,6 +1,6 @@
-import redes # import de redes
-import threading  # serve para rodar envio e recebimento em paralelo
-import os # importa funções do sistema operacional
+import redes
+import threading
+import os
  
 
 opcao = input("Deseja hostear (h) ou conectar-se (c) a uma sala? h/c: ").strip().lower() # lê a escolha do usuário, remove espaços e padroniza o texto em letras minúsculas
@@ -41,9 +41,9 @@ apelido =  input("Qual apelido deseja usar na conversa?: ") # campo para inserir
 
 nomeDoOutroUsuario = "falhaAoConseguirApelido" # caso não seja recebido um nickname/apelido, o sistema irá guardar um nickname padrão
 
-sock = redes.crirSocket(protocolo, ipHost, portaSala) # cria o socket por meio da função do módulo "redes"
-sockconectado = sock # referencia o socket principal (se for tcp, pode virar guardar um socket em específico)
-enderecoconectado = (ipHost, portaSala) # endereço padrão com IP e a porta coletadas
+sock = redes.crirSocket(protocolo, ipHost, portaSala)
+sockconectado = sock
+enderecoconectado = (ipHost, portaSala)
 
 
 if opcao == 'h': # se o usuário for host
@@ -60,37 +60,37 @@ if opcao == 'h': # se o usuário for host
 
        sockconectado.settimeout(None) # remove o timeout
 
-       IP, PORTA = enderecoconectado # extrai ip e porta da variável de endereço
-       print(f"Conectado por {IP}:{PORTA} utilizando {protocolo.upper()}.") # mensagem de conexão
-       dados, _ = redes.receberDados(sockconectado, protocolo) # recebe a mensagem do cliente
+       IP, PORTA = enderecoconectado
+       print(f"Conectado por {IP}:{PORTA} utilizando {protocolo.upper()}.")
+       dados, _ = redes.receberDados(sockconectado, protocolo)
 
 
-    else: #se for udp
-        print("Aguardando conexão por 3min...") # mensagem de espera
-        dados, enderecoconectado = redes.receberDados(sock, protocolo) # recebe os dados
-        sock.settimeout(None) # remove o timeout após o primeiro contato
-        IP, PORTA = enderecoconectado # guarda ip/porta do remetente
-        print(f"Conectado por {IP}:{PORTA} utilizando {protocolo.upper()}.") # confirmação de conexão lógica em udp
+    else:
+        print("Aguardando conexão por 3min...")
+        dados, enderecoconectado = redes.receberDados(sock, protocolo)
+        sock.settimeout(None)
+        IP, PORTA = enderecoconectado
+        print(f"Conectado por {IP}:{PORTA} utilizando {protocolo.upper()}.")
 
-
-    nomeDoOutroUsuario = dados.get("Apelido", nomeDoOutroUsuario)
-    redes.enviarDados(sockconectado, {"Apelido": apelido}, protocolo, enderecoconectado)
+    dados, _ = redes.receber_dados(sockconectado, protocolo)
+    nomeDoOutroUsuario = dados.get("Apelido")
+    redes.enviar_dados(sockconectado, {"Apelido": apelido}, protocolo, enderecoconectado)
 
 else: # se o usuário for cliente
 
-    if protocolo == "tcp": # se o protocolo do cliente for tcp
-        sock.connect((ipHost, portaSala)) # conecta o host na porta
-        print(f"Conectado a {ipHost}:{portaSala} utilizando {protocolo.upper()}.") # confrima a conexão
-        redes.enviarDados(sock, {"Mensagem": "conectar"}, protocolo) # envia uma mensagem inicial de conexão
-        dados, _ = redes.receberDados(sock, protocolo) # aguarda a resposta do servidor
-    else: # se o cliente escolher udp
-        enderecoconectado = (ipHost, portaSala) # define o endereço do servidor para o envio das mensagens
-        redes.enviarDados(sock, {"Mensagem": "conectar"}, protocolo, enderecoconectado) # mensagem de confirmação lógica
-        print(f"Conectado a {ipHost}:{portaSala} utilizando {protocolo.upper()}.") # recebe a resposta do servidor
+    if protocolo == "tcp":
+        sock.connect((ipHost, portaSala))
+        print(f"Conectado a {ipHost}:{portaSala} utilizando {protocolo.upper()}.")
+        redes.enviarDados(sock, {"Mensagem": "conectar"}, protocolo)
+        dados, _ = redes.receberDados(sock, protocolo)
+    else:
+        enderecoconectado = (ipHost, portaSala)
+        redes.enviarDados(sock, {"Mensagem": "conectar"}, protocolo, enderecoconectado)
+        print(f"Conectado a {ipHost}:{portaSala} utilizando {protocolo.upper()}.")
         dados, _ = redes.receberDados(sock, protocolo)
 
-    nomeDoOutroUsuario = dados.get("Apelido", nomeDoOutroUsuario) # captura o apelido retornado
-    redes.enviarDados(sock, {"Apelido": apelido}, protocolo, enderecoconectado) # envia o próprio apelido para o host
+    nomeDoOutroUsuario = dados.get("Apelido", nomeDoOutroUsuario)
+    redes.enviarDados(sock, {"Apelido": apelido}, protocolo, enderecoconectado)
 
 
 
@@ -110,11 +110,11 @@ def finalizarAplicacao(msg=""): # finaliza a aplicação
     except Exception: # ignora exceções
         pass # não faz nada se houver erro
 
-def receberMensagens(sessao): # imprime e recebe as mensagens do outro usuário
-    global rodando # irá usar/modificar a variável global (que pode ser acessada em qualquer lugar do código) "rodando"
-    while rodando: # enquanto "rodando" estiver ativa
-        dados = None # inicia a variável de dados
-        dados, _ = redes.receberDados(sockconectado, protocolo) # bloqueia aguardando dados do socket
+def receberMensagens(sessao):
+    global rodando
+    while rodando:
+        dados = None
+        dados, _ = redes.receberDados(sockconectado, protocolo)
 
         if not rodando or not sockconectado: # se não houver aplicação ou se não houver socket
             msg = f"{nomeDoOutroUsuario} encerrou a conexão. Encerrando..." # mensagem de encerramento
@@ -143,18 +143,18 @@ def mandarMensagens(sessao): # lê o teclado e envia a mensagem
             comando = "" # armazena instruções especiais se for preenchida. se ficar vazia, é uma mensagem comum
             conteudo = sessao.prompt() # lê uma linha do usuário
 
-            if conteudo == "/sair": # comando para sair do chat
-                rodando = False # atualiza o sinalizador para encerrar
-                comando = "desconectar" # define o comando de desconexão
-                mensagem = {"Comando": comando, "Mensagem": ""} # recebe dados sem texto
-                redes.enviarDados(sockconectado, mensagem, protocolo, enderecoconectado) # informa o outro usuário
-                print("Desconectando...") # mensagem de exibição para o usuário local
-                finalizarAplicacao("") # encerra os sockets
-                break # encerra o loop
+            if conteudo == "/sair":
+                rodando = False
+                comando = "desconectar"
+                mensagem = {"Comando": comando, "Mensagem": ""}
+                redes.enviarDados(sockconectado, mensagem, protocolo, enderecoconectado)
+                print("Desconectando...")
+                finalizarAplicacao("")
+                break
 
-            if rodando: # se ainda houver conexão
-                mensagem = {"Comando": comando, "Mensagem": conteudo} # monta a mensagem do chat
-                redes.enviarDados(sockconectado, mensagem, protocolo, enderecoconectado) # envia por meio do módulo "redes"
+            if rodando:
+                mensagem = {"Comando": comando, "Mensagem": conteudo}
+                redes.enviarDados(sockconectado, mensagem, protocolo, enderecoconectado)
 
         except (EOFError, KeyboardInterrupt): # prepara o sistema se for pressionado ctrl + D (que é usado no terminal para encerrar a entrada dos dados) ou ctrl+c (que encerra o programa)
             rodando = False # encerra a variável
