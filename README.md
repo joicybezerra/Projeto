@@ -30,4 +30,5 @@
 - Na conexão TCP, o host cria um socket, faz bind no IP/porta inserida e aguarda a conexão do cliente. O cliente se conecta e, dessa forma, tanto o host quanto o cliente podem enviar e receber mensagens sem precisar se reconectar.
 - Na conexão UDP, a comunicação ocorre por envio de pacotes independentes diretamente para o endereço e porta do destino, não tendo uma conexão persistente. Nesse protocolo, o host apenas espera receber dados vindos de qualquer IP/porta, mostrando que o protocolo UDP não traz garantia da chegada e da ordem da mensagem.
 
-Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
